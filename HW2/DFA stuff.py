@@ -5,6 +5,44 @@
 
 #Below is my code for the Man, Wolf, Goat, Cabbage problem as described in Ch.4 Q:3
 
+# char m  w  g  c
+delta = [
+    [10, 10, 1, 10],    # State 0 Start
+    [2, 10, 0, 10],     # State 1
+    [1, 5, 10, 3],      # State 2
+    [10, 10, 4, 2],     # State 3
+    [10, 7, 3, 10],     # State 4
+    [10, 2, 6, 10],     # State 5
+    [10, 10, 5, 7],     # State 6
+    [8, 4, 10, 6],      # State 7
+    [7, 10, 9, 10],     # State 8
+    [10, 10, 8, 10],    # State 9 ACCEPTING
+    [10, 10, 10, 10]    # State 10 TRAP
+]
+
+asdf = {
+    'm': 0,
+    'w': 1,
+    'g': 2,
+    'c': 3
+}
+
+start_state = 0
+input_string = input("Enter an Appropriate String: ")
+final = [9]
+
+while len(input_string) > 0:
+    current_state = start_state
+    for character in input_string:
+        placeholder = asdf[character]
+        current_state = delta[current_state][placeholder]
+
+    if current_state in final:
+        print("String Accepted.")
+        pass
+    else:
+        print("String Denied.")
+        pass
 
 
 #Below is my code for "Write a program that 
