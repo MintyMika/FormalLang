@@ -22,6 +22,8 @@ def backtrackNFA(delta, string, acceptingStates = [1, 2, 3], current_state = 0):
         #if the current state is in the transition function, but the current character is not in the transition function, return False
         if string[i] not in delta[current_state]:
             return False
+        
+
         #if the current state and character are in the transition function, set the current state to the next state
         current_state = delta[current_state][string[i]]
 
@@ -64,3 +66,4 @@ for string in strings:
         print(string, 'is accepted')
     else:
         print(string, 'is not accepted')
+        
