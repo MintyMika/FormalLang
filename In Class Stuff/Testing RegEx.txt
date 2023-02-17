@@ -1,3 +1,19 @@
+
+RegEx for replacing all duplicate words is
+/(\b\w+\b)(?:\s+\b\1\b)+/gi
+The problem is that this doesn't include '-,. etc.
+An almost similar one that does include those is
+/(\b\S+\b)(?:\s+\b\1\b)+/gi
+
+The RegEx below is for formatting first middle and lastnames
+/^(\S+)\s(\S).*\s(\S+)$/mg
+
+Reformatting phone numbers of all types:
+
+
+A RegEx can not do everything!
+
+
 Bee Movie Script
 According to all known laws
 of aviation,
