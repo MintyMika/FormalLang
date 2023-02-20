@@ -49,18 +49,12 @@ def parallelBitmapSearchNFA(delta, string, acceptingStates = [1, 2, 3], current_
 
 
 #Declare the transition function
-delta = {   #This is the delta for the NFA in the book on page 73 at the top of the page
+delta = {   #This is the delta for the NFA in the book for Chapter 6 Question 7
     0: {'a': [0, 1], 'b': [0]},
     1: {'a': [2], 'b': []},
     2: {'a': [2], 'b': [2]}
 }
 
-delta2 = [  #This is the delta for the NFA in the book on page 73 at the top of the page
-    #q_n,: [1<<0, 1<<2|1<<1, 1<<2] as an example
-    [1<<0|1<<1, 1<<0],
-    [1<<2, 0],
-    [1<<2, 1<<2]
-]
 
 #Declare the accepting states
 acceptingStates = [2]
@@ -89,3 +83,30 @@ for string in strings:
         print(i, string, 'is not accepted')
     i += 1
         
+
+#------------------------------------------------------------------
+#The following code is for the parallelBitmapSearchNFA function
+
+#Declare the transition function
+delta2 = [  #This is the delta for the NFA in the book for Chapter 6 Question 7
+    #q_n,: [1<<0, 1<<2|1<<1, 1<<2] as an example
+    [1<<0|1<<1, 1<<0],
+    [1<<2, 0],
+    [1<<2, 1<<2]
+]
+
+deltaHw3 = [
+    [1<<1|1<<4,     1<<2|1<<5],         #0
+    [1<<1,      1<<0|1<<1|1<<2|1<<4],   #1
+    [1<<3|1<<4,     1<<1|1<<2|1<<5],    #2
+    [1<<0|1<<1|1<<2|1<<4,       1<<3],  #3
+    [1<<4,      1<<5],                  #4
+    [1<<0|1<<1|1<<4|1<<6,       1<<7],  #5
+    [1<<8|1<<4|1<<1, 1<<2|1<<4|1<<5],   #6
+    [1<<5,      1<<0|1<<1|1<<3|1<<6],   #7
+    [1<<7, 1<<8]                        #8
+]
+
+#NOTE: Test delta2 first because I know what the results should be
+
+#Define the function
