@@ -71,6 +71,19 @@ strings = [
     'bbaa', 'bbab', 'bbba', 'bbbb'
     ]
 
+#rewrite the strings to test where a is 1 and b is 0 to test the parallelBitmapSearchNFA function
+strings0 = [
+    0b1, 0b0, 0b11, 0b10, 0b01,
+    0b00, 0b111, 0b110, 0b101,
+    0b100, 0b011, 0b010, 0b001,
+    0b000, 0b1111, 0b1110, 0b1101,
+    0b1100, 0b1011, 0b1010,
+    0b1001, 0b1000, 0b0111,
+    0b0110, 0b0101, 0b0100,
+    0b0011, 0b0010, 0b0001, 0b0000
+]
+
+
 
 
 #Loop through the list of strings and print the results
@@ -110,3 +123,50 @@ deltaHw3 = [
 #NOTE: Test delta2 first because I know what the results should be
 
 #Define the function
+def parallelBitmapSearchNFA(delta, string, acceptingStates = [1, 2, 3], current_state = 0):
+    #This function will take in a string and determine if it is accepted by the NFA
+    #delta is the transition function represented as an array of bitmaps
+    #string is the string to be checked
+    #return True if the string is accepted, False otherwise
+
+    #Declare the current state
+    current_state = 0
+
+    #Declare the current bitmap
+    current_bitmap = 1<<current_state
+
+    #Loop through the string
+    for char in range(string):
+        #Declare the next bitmap
+        next_bitmap = 0
+
+        #Loop through the current bitmap
+        for i in range(0, len(delta)):
+            #If the current state is in the current bitmap
+            if current_bitmap & 1<<i:
+                #Add the next state to the next bitmap
+                try:
+                    next_bitmap |= delta[i][char]
+                except:
+                    print("something went wrong")
+
+        #If the next bitmap is 0, return False
+        if next_bitmap == 0:
+            return False
+
+        #Set the current bitmap to the next bitmap
+        current_bitmap = next_bitmap
+
+    #Loop through the accepting states
+    for state in acceptingStates:
+        #If the state is in the current bitmap, return True
+        if current_bitmap & 1<<state:
+            return True
+
+    #If the state is not in the current bitmap, return False
+    return False
+
+i = 1
+for x in strings0:
+    print(i, parallelBitmapSearchNFA(delta2, x, acceptingStates))
+    i += 1
