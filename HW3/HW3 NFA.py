@@ -5,44 +5,62 @@
 
 #This program will take in a string and determine if it is accepted by the NFA
 
-def backtrackNFA(delta, string, acceptingStates = [1, 2, 3], current_state = 0):
+def recursiveBacktrackNFA(delta, string, acceptingStates = [1, 2, 3], current_state = 0):
     #This function will take in a string and determine if it is accepted by the NFA
     #delta is the transition function
     #string is the string to be checked
     #return True if the string is accepted, False otherwise
 
-    #initialize the current state to 0
-    current_state = 0
-
-    #loop through the string
-    for i in range(len(string)):
-        #if the current state is not in the transition function, return False
-        if current_state not in delta:
+    #if the string is empty, check if the current state is in the accepting states
+    if len(string) == 0:
+        if current_state in acceptingStates:
+            return True
+        else:
             return False
-        #if the current state is in the transition function, but the current character is not in the transition function, return False
-        if string[i] not in delta[current_state]:
-            return False
-        
 
-        #if the current state and character are in the transition function, set the current state to the next state
-        current_state = delta[current_state][string[i]]
-
-    #if the current state is in the final state, return True
-    if current_state in acceptingStates:
-        return True
-    #otherwise, return False
-    else:
+    #if the current state is not in the transition function, return False
+    if current_state not in delta:
         return False
-    
+
+    #if the current state is in the transition function, but the current character is not in the transition function, return False
+    if string[0] not in delta[current_state]:
+        return False
+
+    #if the current state and character are in the transition function, set the current state to the next state
+    for next_state in delta[current_state][string[0]]:
+        #if the recursive call returns True, return True
+        if recursiveBacktrackNFA(delta, string[1:], acceptingStates, next_state):
+            return True
+
+    #if the recursive call returns False, return False
+    return False
     #A delta that would work for this NFA is as follows:
     #delta = {0: {'a': 1, 'b': 0}, 1: {'a': 2, 'b': 0}, 2: {'a': 3, 'b': 0}, 3: {'a': 3, 'b': 3}}
 
+    #An appropriate string to test is 'abba'
+
+def parallelBitmapSearchNFA(delta, string, acceptingStates = [1, 2, 3], current_state = 0):
+    #This function will take in a string and determine if it is accepted by the NFA
+    #delta is the transition function represented as an array of bitmaps
+    #string is the string to be checked
+    #return True if the string is accepted, False otherwise
+    pass
+
+
+
 #Declare the transition function
-delta = {
+delta = {   #This is the delta for the NFA in the book on page 73 at the top of the page
     0: {'a': [0, 1], 'b': [0]},
     1: {'a': [2], 'b': []},
     2: {'a': [2], 'b': [2]}
 }
+
+delta2 = [  #This is the delta for the NFA in the book on page 73 at the top of the page
+    #q_n,: [1<<0, 1<<2|1<<1, 1<<2] as an example
+    [1<<0|1<<1, 1<<0],
+    [1<<2, 0],
+    [1<<2, 1<<2]
+]
 
 #Declare the accepting states
 acceptingStates = [2]
@@ -60,10 +78,14 @@ strings = [
     ]
 
 
+
 #Loop through the list of strings and print the results
+print(len(strings))
+i = 0
 for string in strings:
-    if backtrackNFA(delta, string):
-        print(string, 'is accepted')
+    if recursiveBacktrackNFA(delta, string, acceptingStates):
+        print(i, string, 'is accepted')
     else:
-        print(string, 'is not accepted')
+        print(i, string, 'is not accepted')
+    i += 1
         
