@@ -5,3 +5,8 @@
 555 777-8888
 555.666.7777
 666-777-888
+
+//RegEx to convert all these phone numbers to the format (xxx) xxx-xxxx
+/^.?(\d{3}).{0,2}(\d{3}).?(\d{4})$/mg
+replace => ($1) $2-$3
+
